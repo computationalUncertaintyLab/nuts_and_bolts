@@ -1,0 +1,6 @@
+.venv/
+book/_build/
+book/.jupyter_cache/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store

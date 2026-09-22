@@ -1,0 +1,43 @@
+# Jupyter Book 2 / MyST — https://mystmd.org/guide/configuration
+version: 1
+project:
+  id: nuts-and-bolts-data-science
+  title: Data Science
+  subtitle: Probability, statistics, and algorithms
+  description: Course text for PHDSI — probability, statistics, linear models, labs, and PCA.
+  authors:
+    - name: Tom McAndrew
+  github: https://github.com/computationalUncertaintyLab/nuts_and_bolts
+  bibliography:
+    - references.bib
+  toc:
+    - file: intro.md
+    - title: Probability
+      children:
+        - file: content/1_samplespaceAndPopulation.md
+        - file: content/2_randomvariables.md
+        - file: content/3_probability_dists.md
+    - title: Statistics
+      children:
+        - file: content/4_LLN_MOM.md
+        - file: content/5_LT.md
+        - file: content/7_simple_linear_regression.md
+        - file: content/6_matrix_calculus.md
+        - file: content/logistic_regression.md
+    - title: Algorithms lab
+      children:
+        - file: content/LAB01.md
+        - file: content/LAB02.md
+        - file: content/LAB03.md
+        - file: content/LAB04.md
+        - file: content/LAB05.md
+    - title: Multivariate methods
+      children:
+        - file: PCA.ipynb
+site:
+  template: book-theme
+  options:
+    logo_text: Data Science
+    favicon: favicon.png
+    style: ./custom.css
+    folders: false

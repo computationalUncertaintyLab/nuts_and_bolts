@@ -1,0 +1,655 @@
+---
+title: Law of large numbers, Method of Moments, and the Central limit theorem
+---
+
+# Law of large numbers, Method of Moments, and the Central limit theorem
+
+## Introduction
+The law of large numbers (LLN) and the central limit theorem underpin a large portion of statistical theory. We will see that the LLN will link proportions to probabilities, expected values to the sample mean, and allow us to estimate parameters of a random variable given a dataset.
+
+The method of moments will be the primary tool we use to derive parameter estimates for parameters for a given distribution of a random variable. This method follows directly from the LLN.
+
+Finally, we will explore the Central limit theorem which is the foundation of much of generating hypothesis tests and building confidence intervals.
+
+## Independent and identically distributed and sample
+To model a dataset, $\mathcal{D}$, we will need to make assumptions about how our data set was generated.
+
+A common assumption for a dataset with $n$ data points $\mathcal{D} = (x_{1}, x_{2}, \cdots, x_{n} )$ is that each data point was generated from a random variable $x_{1} \sim X_{1}, x_{2} \sim X_{2}, \cdots, x_{n} \sim X_{n}$. The collection of random variables $X_{1},X_{2},\cdots, X_{n})$ is called a **sample** and the dataset $\mathcal{D}$ above is typically called one **realized sample** or a **realization** of the sample.
+
+If we additionally assume that all the random variables are **identically distributed**, or that they have the same distribution $X_{1},X_{2}, \cdots, X_{n} \sim f$, and we assume that for any $i$ and $j$ that $X_{i}$ and $X_{j}$ are independent then we call our sample a **random sample**.
+
+Because pairwise independence between random variables and that all random variables are identically distributed are two common assumptions, they are abbreviated as **i.i.d** which stands for \"independent and identically distributed\".
+
+## Properties of the Expected value and Variance of a sum
+To explore the law of large numbers, we will need another property of the expectation. The expected value of the sum of random variables is the sum of the expected value of each individual random variable. $$\begin{aligned}
+    \mathbb{E}(X+Y) = \mathbb{E}(X) + \mathbb{E}(Y)
+\end{aligned}$$
+
+When we combine the properties of expected values we have already learned, we can state $$\begin{aligned}
+    \mathbb{E}(aX+bY) = a \mathbb{E}(X) + b \mathbb{E}(Y)
+\end{aligned}$$ and this is true for any number of random variables $$\begin{aligned}
+    \mathbb{E}\left( \sum_{i=1}^{N} a_{i} X_{i} \right) = a_{i} \sum_{i=1}^{N} \mathbb{E}(X_{i})
+\end{aligned}$$
+
+We start at the definition of the expected value to derive this property $$\begin{aligned}
+    \mathbb{E}(X+Y) &= \sum_{x} \sum_{y} (X+Y) f_{X+Y}(x,y) \\ 
+                    &=\sum_{x} \sum_{y} X f_{X+Y}(x,y) + Y f_{X+Y}(x,y) \\
+                    &= \sum_{x} \sum_{y} X f_{X+Y}(x,y) +  \sum_{x} \sum_{y} Y f_{X+Y}(x,y) \\
+                    &= \sum_{x} X f_{X}(x) + \sum_{y} Y f_{Y}(y) \\
+                    &= \mathbb{E}(X) + \mathbb{E}(Y)
+\end{aligned}$$
+
+Suppose $X \sim Geom(1/4)$ and $Y \sim Bernoulli(1/2)$ then $\mathbb{E}(X+Y) = \mathbb{E}(X) + \mathbb{E}(Y) = \frac{1}{1/4} + \frac{1}{2} = 4 \frac{1}{2}$.
+
+The variance is an expected value and so it follows that $$\begin{aligned}
+    V(X+Y) = V(X) + V(Y)
+\end{aligned}$$ and we can state more generally that for two independent random variables $$\begin{aligned}
+    V(aX+bY) = a^{2}V(X) + b^{2}V(Y)
+\end{aligned}$$
+
+Let $X \sim Binomial(N,\theta)$ and $Y \sim Binomial(M,\gamma)$ then $V(X-Y) = V(X + (-1) Y) = V(X) + (-1)^{2} V(Y) = N \theta (1-\theta) + M \gamma (1-\gamma)$.
+
+## Law of large numbers
+The intuition behind the law of large numbers can be characterized by the following experiment: you are asked to flip a fair coin and record the whether the coin is heads up or tails up. After 10 flips you are asked to compute the proportion of heads up flips, after 50 flips you are asked to compute this proportion, after 100, 1,000, 10,000 flips you are asked to compute the proportion of heads up flips. We expect that if this coin is fair that the proportion of flips with heads face up will get closer and closer to 0.50.
+
+The law of large numbers attempts to describe this intuition.
+
+Define a sequence of random variables $X_{1}, X_{2}, \cdots, X_{n}$ such that any pair of random variables, $X_{i}$ and $X_{j}$ are independent (that is $P(X_{i} = x | X_{j} = y) =P(X_{i} = x)$. Finally, transform this sequence into a single random variable $\overline{X}$ that is equal to $\overline{X} = \dfrac{X_{1} + X_{2} + X_{3} + \cdots X_{N}}{N}$.
+
+Then the law of large numbers (LLN) states that given any small number $\epsilon$ that is greater than 0 as $n$ grows towards infinity $(n \to \infty)$ $$\begin{aligned}
+    P( | \overline{X}_{n} - \mu | > \epsilon ) \to 0
+\end{aligned}$$ where $\mu = \mathbb{E}(\overline{X})$.
+
+We can picture a distribution $Z_{n} = | \overline{X}_{n} - \mu |$ that depends on $n$ and as $n$ increase the random variable $Z_{n}$ assigns more and more probability to the value 0. \<pic\>
+
+The LLN has many applications.
+
+::: VT1
+Let a sequence of Bernoulli distributed random variables be (i) pairwise independent and (ii) be distributed the same $X_{1}, X_{2}, \cdots, X_{N} \sim Bern(\theta)$.
+
+Lets take a look at the transformation $\overline{X}$. Consider a sequence of two random variables with a Bernoulli distribution. Then define $$\begin{aligned}
+    S = X_{1} + X_{2}
+\end{aligned}$$
+
+The expected value of $S$ is
+
+$$\begin{aligned}
+    \mathbb{E}(S) &= \mathbb{E}(X_{1} + X_{2}) \\
+                  &= \mathbb{E}(X_{1}) + \mathbb{E}(X_{2})\\
+                  &= \theta + \theta \\ 
+                  &= 2\theta
+\end{aligned}$$ and the expected value of $\overline{X}$ is then $$\begin{aligned}
+    \mathbb{E}(\overline{X}) = \frac{\mathbb{E}(S)}{2}  = \frac{2 \theta}{2} = \theta
+\end{aligned}$$
+
+To gain intuition about what a sample from $\overline{X}$ looks like, assume we collect data points from $n$ random variables $x_{1} \sim X_{1}, x_{2} \sim X_{2}, \cdots, x_{n} \sim X_{n}$. An example of a single data point $d$ could be $$\begin{aligned}
+    d = (0,1,0,1,0,0,1,1,1,0)
+\end{aligned}$$ and the sample mean $\overline{x}$, one sample from $\overline{X}$, is then $$\begin{aligned}
+    S &= \sum_{i=1}^{10} d_{i} \\
+    \overline{x} &= \frac{X}{n}
+\end{aligned}$$
+
+However, the value of $S$ can be counted in two different ways. We can sum up $d_{i}$ one by one in order, or we can multiply zero by the frequency of zeros in our dataset, multiply 1 by the frequency of ones in our dataset, and sum both of these products. $$\begin{aligned}
+    S &= \sum_{i=1}^{10} d_{i} \\
+      &= 0+1+0+1+0+0+1+1+1+0\\
+    S &= N(0) \cdot 0 + N(1) \cdot 1
+\end{aligned}$$ where $N(x)$ is the number of values $x$ in our dataset.
+
+If we use the above method to sum our data points the sample mean simplifies to $$\begin{aligned}
+    \overline{x} &= \frac{ N(0) \cdot 0 + N(1) \cdot 1  }{N} \\ 
+                 &= \frac{N(1)}{N}.
+\end{aligned}$$ The sample mean is the proportion of 1s $(p_{n})$ from our sample of $n$ data points, and the law of large number then says that $$\begin{aligned}
+    &P( | \overline{X} - \mu | > \epsilon ) \to 0 \\ 
+    &P( | p_{n} - \theta | > \epsilon ) \to 0
+\end{aligned}$$ or, roughly, that the sample proportion approaches $\theta$, the true probability that a $1$ will appear.
+:::
+
+::: VT1
+Define a discrete random variable $X_{1}, X_{2}, \cdots, X_{n} \sim f_{X}$, $supp(X_{i}) = \{1,2,3\}$
+
+Lets assume $n=10$ and take a closer look at $S$. One sample from our $n=10$ random variables could be $d = (2,1,3,2,3,2,3,1,2,2)$ and we can compute the sum $S = 2+1+3+2+3+2+3+1+2+2$. However, we could have also summed these ten numbers by multiplying each unique number in the dataset by the frequency this number occurs and then summing these products: $S = N(1) \cdot 1 + N(2) \cdot 2 + N(3) \cdot 3$, where $N(x)$ is the number of times the value $x$ appears. For our specific example $S = 2 \cdot 1 + 5 \cdot 2 + 3 \cdot 3$. The sample mean is then $$\begin{aligned}
+    \overline{x} &= \frac{S}{N} \\ 
+                 &= \frac{N(1) \cdot 1 + N(2) \cdot 2 + N(3) \cdot 3}{N}\\
+                 &= \frac{N(1)}{N} 1 + \frac{N(2)}{N} 2  + \frac{N(3)}{N} 3 
+\end{aligned}$$ We know from our discussion of the LLN and Bernoulli distributed random variables that $\frac{N(1)}{N}$ is the proportion of $1$s , $p_{n}(1)$, and this proportion will approach the true probability of a 1 as we collect more data (as $n \to \infty$).
+
+Let's rewrite the above sample mean computation $$\begin{aligned}
+    \overline{x} &= \frac{N(1)}{N} 1 + \frac{N(2)}{N} 2  + \frac{N(3)}{N} 3 \\ 
+                 &= p_{n}(1) 1 + p_{n}(2) 2  + p_{n}(3) 3 \\ 
+\end{aligned}$$ As $n \to \infty$ $$\begin{aligned}
+    \overline{x} &= \frac{N(1)}{N} 1 + \frac{N(2)}{N} 2  + \frac{N(3)}{N} 3 \\ 
+                 &= f_{X}(1) 1 + f_{X}(2) 2  + f_{X}(3) 3
+\end{aligned}$$ but the above is the expected value of $X$, $\mathbb{E}(X)$, and so as $n$ gets larger the sample mean will become closer to the true expected value.
+:::
+
+### LLN for transformations
+Earlier we saw that by definition if we define a random variable $X$ and a function $g$ then $$\begin{aligned}
+    \mathbb{E}\left[ g(X) \right] = \sum_{i \in supp(X)} g(x_{i}) f_{X}(x_{i})
+\end{aligned}$$ Because the above is equivalent to the expectation of a transformed random variable $Y = g(X)$ the LLN has a similar result for any transformation of a random variable.
+
+As $n \to \infty$, $$\begin{aligned}
+    P( | \overline{Y}_{n} - \mu_{Y}| > \epsilon ) \to 0 
+\end{aligned}$$ where $\mu_{Y} = \mathbb{E}(Y) = \mathbb{E}\left[g(X)\right]$.
+
+The above implies that the LLN applies to any transformation of a random variable, including $$\begin{aligned}
+    S = \frac{\sum_{i=1}^{N} ( X_{i} - \mu  )^{2}}{N}
+\end{aligned}$$ where $\mu = \mathbb{E}[g(X)]$.
+
+Let us find a simple expression for $\mathbb{E}(S)$. $$\begin{aligned}
+    \mathbb{E}(S) &= \mathbb{E} \left[ \frac{\sum_{i=1}^{N} ( X_{i} - \mu  )^{2}}{N}\right] \\ 
+                  &= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}\left[( X_{i} - \mu  )^{2}\right]\\
+                  &= \frac{1}{N} \sum_{i=1}^{N} V(X)\\
+                  &= \frac{1}{N}  N V(X)  = V(X)
+\end{aligned}$$
+
+Because $\mathbb{E}(S) = V(X)$, the LLN states that for any $\epsilon >0$ as $n \to \infty$ $$\begin{aligned}
+    P(|S - V(X)| > \epsilon) \to 0
+\end{aligned}$$ or that $S$ approaches the true variance of $X$.
+
+## Statistics, Estimators, and the Method of Moments
+Given a random sample $(X_{1}, X_{2}, X_{3}, \cdots, X_{n})$ or collection of random variables that are i.i.d, a **statistic** is a function of our sample $T(X_{1},X_{2},X_{3},\cdots,X_{n})$. Because a statistic is a function of a collection of random variables, our statistic too can be characterized by a probability distribution over potential values of the statistic.
+
+For a random sample $(X_{1},X_{2},X_{3},\cdots,X_{n})$ all with the same probability density function $f_{X}(\theta)$ where $\theta$ is a parameter, an $estimator$, $T(X_{1},X_{2},\cdots,X_{n})$ of $\theta$ is (i) a statistic that (ii) is meant get closer to $\theta$ as $n \to \infty$.
+
+An **estimate** is an estimator applied to a realized sample, and an estimate for a parameter is often denoted as the parameter with a \"hat\". For example, an estimate of the parameter $\beta$ would bve denoted $\hat{\beta}$.
+
+One way to develop an estimator for a parameter, or for several parameters, is to use the **Method of Moments**. For a random sample $(X_{1},X_{2},\cdots,X_{n})$ where each random variable follows the same probability density function with $k$ parameters $X_{i} \sim f_{X}(x | \theta_{1},\theta_{2},\theta_{k})$, the Method of moments generates estimators for all $k$ parameters by solving this set of equations $$\begin{aligned}
+    \mathbb{E}(X)     &= g_{1}(\theta_{1},\theta_{2},\cdots,\theta_{k}) \\ 
+    \mathbb{E}(X^{2}) &= g_{2}(\theta_{1},\theta_{2},\cdots,\theta_{k}) \\ 
+    \vdots \\
+    \mathbb{E}(X^{k}) &= g_{k}(\theta_{1},\theta_{2},\cdots,\theta_{k}), 
+\end{aligned}$$ replacing each exact, expected value by sample means. The expected value $\mathbb{E}(X)$ is replaced by $\overline{X} = \sum_{i=1}^{N} X_{i}/N$, the expected value $\mathbb{E}(X^{2})$ is replaced by its sample mean $\overline{X^{2}} = \sum_{i=1}^{N} X_{i}^{2} / N$, etc.
+
+Lets look at an example.
+
+::: VT1
+Suppose we are studying the probability of survival among patients who are treated with dialysis and experienced a myocardial infarction (see [10.1056/NEJM199809173391203](10.1056/NEJM199809173391203){.uri} for a manuscript on this topic). We collect data on 50 patients and model whether they survive or not as a random sample $(X_{1},X_{2},X_{3},\cdots,X_{50})$ where $X_{i} \sim Bern(\theta)$ and the value 1 represents survival and zero otherwise. We follow patients for a year and record a dataset $\mathcal{D} =(1,0,0,1,1,1,0,0,0,0,1,0,\cdots)$ that contains 36 ones and 14 zeros.
+
+Because the Bernoulli distribution has a single parameter we only need a single equation that related the expected value and our parameter $\theta$. Because the Bernoulli distribution has a single parameter we only need a single equation that related the expected value and our parameter $\theta$.
+
+The expected value is $\matbb{E}(X) = \theta$ and so we can derive a MoM estimator by replacing the exact $\mathbb{E}(X)$ with the sample mean $\overline{X}$. Our estimator for $\theta$ is $\hat{\theta} = \overline{X} = \sum_{i=1}^{N} x_{i} / N = 36/50 = 72\%$.
+:::
+
+::: VT1
+Suppose $(Y_{1},Y_{2},\cdots,Y_{10})$ is a random sample such that $Y_{i} \sim U(\alpha,\beta)$. We collect a dataset (realized sample) $\mathcal{D} = (0.22,0.45,0.12,0.32,0.56,0.73,0.91,0.51,0.11,0.67)$. To develop an estimate for $\alpha$ and an estimate for $\beta$ using the method of moments, we will need to look at the following two equations: $$\begin{aligned}
+    \mathbb{E}(X)     &= \frac{\alpha+\beta}{2}\\ 
+    \mathbb{E}(X^{2}) &= g(\alpha,\beta) 
+\end{aligned}$$
+
+On first glance, the second equation sounds difficult to solve. However, we found an expression for the variance that depends on $\mathbb{E}(X^{2})$ and on $\mathbb{E}(X)$ in chapter 2, exercise 9.
+
+$$\begin{aligned}
+    V(X) &= \mathbb{E}(X^2) - \left[\mathbb{E}(X)\right]^{2} \\
+    \mathbb{E}(X^2) &= V(X) +  \left[\mathbb{E}(X)\right]^{2}  
+\end{aligned}$$
+
+We know that $V(X) = \frac{(b-a)^{2}}{12}$ and so
+
+$$\begin{aligned}
+    \mathbb{E}(X^2) &= V(X) +  \left[\mathbb{E}(X)\right]^{2}  \\
+                    &= \frac{(\beta-a)^{2}}{12} + \left[ \frac{(\alpha+\beta)}{2} \right]^{2} \\ 
+                    &= \frac{\beta^{2} + \alpha^{2} - 2\alpha\beta}{12} + \frac{\alpha^{2}+\beta^{2}+2\alpha\beta}{4} \\ 
+                    &= \frac{\beta^{2} + \alpha^{2} + \alpha\beta}{3}  
+\end{aligned}$$
+
+Now our MoM equations are $$\begin{aligned}
+    \mathbb{E}(X)     &= \frac{\alpha+\beta}{2}\\ 
+    \mathbb{E}(X^{2}) &=  \frac{\beta^{2} + \alpha^{2} + \alpha\beta}{3}
+\end{aligned}$$ and we will replace $\mathbb{E}(X)$ with the sample mean $\overline{X}$ and replace $\mathbb{E}(X^{2})$ with $\overline{X^{2}}$, and then solve for $\alpha$ and $\beta$. $$\begin{aligned}
+    \overline{X}     &= \frac{\alpha+\beta}{2}\\ 
+    \overline{X^{2}} &=  \frac{\beta^{2} + \alpha^{2} + \alpha\beta}{3}
+\end{aligned}$$
+
+From the first equation we find $\alpha = 2\overline{X} - \beta$. We can plug the above into the second equation to find
+
+$$\begin{aligned}
+    \overline{X^{2}} &=  \frac{\beta^{2} + (2\overline{X} - \beta)^{2} + (2\overline{X} - \beta)\beta}{3}\\
+    3\overline{X^{2}} &= \beta^{2} + 4 \overline{X}^{2} + \beta^{2} - 4\overline{X} \beta + 2\overline{X} \beta - \beta^{2}\\
+    3\overline{X^{2}} &= \beta^{2} + 4 \overline{X}^{2} - 2\overline{X} \beta \\  
+    0&= \beta^{2} - (2\overline{X}) \beta + (4 \overline{X}^{2} - 3\overline{X^{2}})\\
+    \hat{\beta} &= 2\overline{X} \pm \frac{\sqrt{ (2\overline{X})^{2} - 4(1)(4 \overline{X}^{2} - 3\overline{X^{2}}) } }{2} \\ 
+    \hat{\beta} &= 2\overline{X} \pm \frac{\sqrt{ 4\overline{X}^{2} - (16 \overline{X}^{2} - 12\overline{X^{2}}) } }{2} \\
+    \hat{\beta} &= 2\overline{X} \pm \frac{\sqrt{ - 12 \overline{X}^{2} + 12\overline{X^{2}} } }{2} \\
+    \hat{\beta} &= 2\overline{X} \pm \frac{ 2\sqrt{3} \sqrt{    \overline{X^{2}} -\overline{X}^{2} } }{2} \\
+    \hat{\beta} &= 2\overline{X} \pm \sqrt{3} \sqrt{    \overline{X^{2}} -\overline{X}^{2} } \\
+\end{aligned}$$
+
+and so for our problem above $\hat{\beta} = 1.37$ and so $\alpha = -0.45$.
+:::
+
+## Central limit theorem
+Given a random sample $(X_{1},X_{2},\cdots,X_{n})$, we used the LLN and method of moments to produce point estimates---a single number---for a parameter that assigned probabilities to value of $X_{i}$. However the LLN only guarantees that our estimator will grow closer to the true parameter value as $n \to \infty$. The LLN does not describe how close we are to the true parameter value for any specific $n$.
+
+The Central limit theorem (CLT) describes the statistical distribution of the sample mean $\bar{X}$, allowing us to describe how close we are to the true parameter value of interest.
+
+For a random sample $(X_{1},X_{2},\cdots,X_{n})$ the **Central Limit Theorem** states $$\begin{aligned}
+    \overline{X}_{n} \sim \mathcal{N}\left(\mu,\frac{\sigma^{2}}{n}\right)
+\end{aligned}$$
+
+or that $$\begin{aligned}
+    \sum_{i=1}^{n} X_{n} \sim \mathcal{N}\left(n \mu, n \sigma^{2}\right)
+\end{aligned}$$
+
+where $\overline{X}_{n} =  \frac{1}{n}\left(X_{1}+X_{2}+\cdots+X_{n}\right)$, $\mu = \mathbb{E}(X)$ and $\sigma^{2} = V(X)$.
+
+::: VT1
+Suppose we wish to study a random sample of $n$ Bernoulli distributed random variables $(Y_{1},Y_{2},\cdots,Y_{n}) \sim Bern(\theta)$.
+
+We know that $\mathbb{E}(Y) = \theta$ and $V(Y) = \theta(1-\theta)$, and so $$\begin{aligned}
+    \overline{Y}_{n} \sim \mathcal{N}\left(\theta, \frac{\theta (1-\theta)}{n} \right)
+\end{aligned}$$
+
+We saw in the previous section on the LLN and MoM that an estimate for $\theta$ is the sample mean so then $$\begin{aligned}
+    \hat{\theta} \sim \mathcal{N}\left(\theta, \frac{\theta (1-\theta)}{n} \right)
+\end{aligned}$$ However, we still cannot compute probabilities that $\hat{\theta}$ is in some interval because the Normal distribution on the right hand side involves the true, unknowable, $\theta$.
+
+$$\begin{aligned}
+    \hat{\theta}(Y) - \theta \sim \mathcal{N}\left(0, \frac{\theta (1-\theta)}{n} \right)
+\end{aligned}$$ here we introduce the notation $\hat{\theta}(Y)$ to reinforce that this is a random variable and not a single value.
+
+To approximate the difference $\hat{\theta}(Y) - \theta$ we can replace $\theta$ with our MoM estimate $\overline{y}$. $$\begin{aligned}
+    \hat{\theta}(Y) - \theta \sim \mathcal{N}\left(0, \frac{\overline{Y}_{n} (1-\overline{Y}_{n})}{n} \right)
+\end{aligned}$$
+
+We can use the above to approximate the probability that the difference between our estimated $\hat{\theta}$ and the true $\theta$ is inside some interval. Suppose we collect the data $\mathcal{D} = (1,1,0,1,0,1,1,1,0,0,1,1,0,1,0)$. Then the CLT says $$\begin{aligned}
+    \hat{\theta}(Y) - \theta \sim \mathcal{N}\left(0, \frac{\overline{y}_{n} (1-\overline{y}_{n})}{n} \right) \\ 
+    \hat{\theta}(Y) - \theta \sim \mathcal{N}\left(0, \frac{ \frac{9}{15}  \cdot \frac{6}{15}} {15} \right) \\ 
+\end{aligned}$$
+
+and we can compute for example the probability that our estimate is 0.1 away from the truth. $$\begin{aligned}
+    P( -0.1 <   \hat{\theta}(Y) - \theta < 0.1) = F(0.1) - F(-0.1) \approx 0.57
+\end{aligned}$$ In other words, there is a $0.57$ probability that our estimate is within 0.1 of the true parameter value $\theta$.
+:::
+
+## Confidence intervals: the CLT in action
+Given a random sample $(X_{1},X_{2},\cdots, X_{n},)$, a **confidence interval** for a parameter $\theta$ is a pair of statistics $(L(X),U(X))$ such that $P( \theta \in [L(X),U(X)] ) = 1 - \alpha$. The number $\alpha$ is called the **confidence coefficient** and we often say that the interval $[L(X),U(X)]$ is a $1-\alpha$ confidence interval for the parameter $\theta$.
+
+A confidence interval provides a range of values that the true parameter is likely to be between.
+
+Suppose we decide to study the prevalence of tuberculosis among people who have diabetes mellitus. Our model supposes we can represent each person in our sample with a random variable $X \sim Bern(\theta)$ where $\theta$ is the probability of an active tuberculosis infection. Given a random sample $(X_{1},X{2},\cdots,X_{n})$ where $X_{i} \sim Bern(\theta)$, we find 34 people had an active infection and 3,456 did not. If we generate a 95% confidence interval for the parameter $\theta$ that is \[0.05%, 2%\] then there are tow claims. Claim one: The confidence interval applied to a random sample that follows all of our assumptions will have a 95% probability that the parameter value is within our confidence interval. Claim two: the confidence interval that was produced from our data either does or does not contain the true parameter value, and we are 95% confident that this interval contains the true parameter value.
+
+### Z values
+Suppose we assumed a random sample generated an observed dataset $\mathcal{D}$ $$\begin{aligned}
+    (X_{1},X_{2},\cdots,X_{n}) \\ 
+    X_{i} \sim f
+\end{aligned}$$
+
+The following transformation $$\begin{aligned}
+    Z = \frac{X - \mathbb{E}(X)}{ \sqrt{V(X)} }
+\end{aligned}$$ is called **standardizing** a random variable.
+
+We can show that a standardized variable has an expected value of zero and variance of one using expected value and variance properties.
+
+$$\begin{aligned}
+    \mathbb{E}(Z) &= \mathbb{E} \left( \frac{1}{V(X)} \left[X - \mathbb{E}(X)\right]  \right) \\ 
+                  &=  \frac{1}{\sqrt{V(X)}} \left[\mathbb{E}(X) - \mathbb{E}(X) \right]  \\
+                  &=0
+\end{aligned}$$ The expected value of our standardized random variable $Z$ is zero.
+
+$$\begin{aligned}
+    V(Z) &= V \left( \frac{1}{\sqrt{V(X)}} \left[X - \mathbb{E}(X)\right]  \right) \\
+         &=  \frac{1}{V(X)} \left[V(X) - 0\right] \\
+         &=  1
+\end{aligned}$$ The variance of our standardized random variable $Z$ is one.
+
+In practice, we can transform our individual data points $x_{1},x_{2},\cdots,x_{n}$ into standard, or \"z\" scores by subtracting from each point $x_{i}$ the sample mean and sample standard deviation.
+
+Suppose we are given a dataset $\mathcal{D} = (1.05,4.20,-2.80,1.34)$. To transform these four points into four z-scores we need to follow three steps: (i) compute the sample mean, (ii) compute the sample standard deviation, and (iii) subtract from each point the sample mean and divide this difference by the sample standard deviation.
+
+The sample mean is $$\overline{x} = (1.05+4.20-2.80+1.34)/4 = 0.95$$.
+
+The sample standard deviation is $$s = \left[(1.05-0.95)^2 + (4.20-0.95)^2 + (2.80-0.95)^2 + (1.34-0.95)^2\right]/4 = 2.49$$.
+
+Our four z-scores are then $$z = ( (1.05-0.95)/2.49,(4.20-0.95)/2.49,(-2.80-0.95)/2.49,(1.34-0.95)/2.49)$$
+
+Z-scores are useful for characterizing the probability of sample points in a dataset and for eliminating measurement units from a set of sample points. The z score for a sample point $z_{i}$ $$z_{i} = \frac{x_{i} - \mathbb{E}(X) }{\sqrt{V(X)}}$$ can be interpreted as the number of standard deviations the sample point $x_{i}$ is from the expected value of the random variable $X_i$.
+
+Chebychev's inequality tells us that values generated by a random variable $X$ are likely close to the expected value, and so large z-scores are improbable while z-scores close to zero are probable. A z-score is meant to map values to the probability that this observation occurred. Large z values should denote a small probability that this event occurred and small z values should denote a large probability that this event occurred.
+
+Z-scores also eliminate measurement units $(u)$ from an observation by mapping $u$ to units of standard deviation. Mapping the units of two or more variables to the number of standard deviations from their mean is a convenient way to compare two variables (i) where one variable has large values and the second has small values (ii) where one variable has a large variance and the second has a small variance. Large, small values and large, small variances associated with a variable are often because of the chosen units.
+
+### Using the CLT to build a confidence interval
+The method of moments (MoM) has given us an algorithm for estimating parameter values, however the MoM only provides a single estimate. Because we compute our estimated parameter values from a sample of data, we know that our estimate is not exact and will vary for every data set we collect.
+
+A confidence interval for a parameter, or parameters, is a set of statistics---a lower bound $(L)$ and upper bound $(U)$---where we expect the true parameter values to lie with high probability. Confidence intervals take into account the size of our sample dataset, the variability in our estimate of parameter values, and should accompany a point estimate for a parameter.
+
+More formally, given a random sample $(X_{1},X_{2},\cdots,X_{n})$, a confidence interval for the parameter $\theta$ is a pair of statistics $[L(X), U(X)]$ such that $P(\theta \in [L(X),U(X)]) = 1-\alpha$. The value $\alpha$ is called the confidence coefficient and the interval $[L(X), U(X)]$ is called a $1-\alpha$ confidence interval.
+
+One way to build a confidence interval is to use the Central Limit Theorem. The CLT states that $$\begin{aligned}
+    \overline{X} \sim \mathcal{N}\left( \mu, \sigma^{2} \right)
+\end{aligned}$$ where $\mu$ is $\mathbb{E}(X)$ and $\sigma^{2}$ is $V(X)$.
+
+Suppose $(X_{1},X_{2},\cdots,X_{n})$. The CLT states that $$\begin{aligned}
+    \overline{X} \sim \mathcal{N}(\mu,\sigma^{2}/n)
+\end{aligned}$$ We can subtract from our random variable $\overline{X}$ the expected value $\mu$ $$\begin{aligned}
+    \overline{X} - \mu \sim \mathcal{N}(0,\sigma^{2}/n)
+\end{aligned}$$ and divide by $\dfrac{\sigma}{\sqrt{n}}$ to find that $$\begin{aligned}
+    &\frac{\overline{X} - \mu}{\frac{\sigma}{\sqrt{n}}} \sim \mathcal{N}(0,1) \\ 
+    Z=&\frac{\sqrt{n}(\overline{X} - \mu)}{\sigma} \sim \mathcal{N}(0,1)
+\end{aligned}$$ where $\mu = \mathbb{E}(X)$ and $\sigma^{2} = V(X)$.
+
+The translated and scaled quantity above, a new random variable $Z$, has a standard normal distribution. A random variable $Z$ has a **standard normal** distribution if $Z \sim \mathcal{N}(0,1)$. That is, a normal distribution with expected value zero and variance one.
+
+One way to form a $1-\alpha$ confidence for a parameter $\mu$ is to find two values $a$ and $b$ such that $P(a<Z<b) = 1-\alpha$ and then solve for $\mu$.
+
+Lets suppose we found these two values $a$ and $b$ $$\begin{aligned}
+    P(a<Z<b) &= 1-\alpha\\
+    P\left(a< \frac{\overline{X} - \mu}{\frac{\sigma}{\sqrt{n}}} <b \right) &= 1-\alpha\\
+    P\left(a \cdot \frac{\sigma}{\sqrt{n}} < \overline{X} - \mu <b \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha\\
+    P\left(-a \cdot \frac{\sigma}{\sqrt{n}} > \mu - \overline{X} > -b \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha\\
+    P\left(\overline{X} -a \cdot \frac{\sigma}{\sqrt{n}} > \mu   > \overline{X} -b \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha
+\end{aligned}$$
+
+The normal distribution is symmetric about $0$ and so if $P( Z > a ) = \alpha$ then $P(Z < -a) = \alpha$. To bound $Z$ such that $P(a<Z<b) = 1-\alpha$ we will split $1-\alpha$ evenly.
+
+Suppose we find values $a$ and $b$ such that $$\begin{aligned}
+    P(Z<a) &= \alpha/2 \\ 
+    P(Z>b) &= \alpha/2 \\
+\end{aligned}$$ then $$\begin{aligned}
+    P([Z<a] \cup [a<Z<b] \cup [Z>b] ) &= 1\\
+    P(Z<a) + P(a<Z<b) + P(Z>b) &= 1\\
+    P(a<Z<b) &= 1 - P(Z<a) - P(Z>b) \\ 
+    P(a<Z<b) &= 1 - \alpha/2 - \alpha/2 \\
+    P(a<Z<b) &= 1 - \alpha
+\end{aligned}$$
+
+We define the symbol $z_{\alpha}$ as the value such that the probability that a random variable $Z$ with a standard normal distribution, $\mathcal{N}(0,1)$, is less than $z_{\alpha}$ equals $\alpha$. $$P(Z < z_{\alpha}) = \alpha.$$
+
+So then $$\begin{aligned}
+    P\left(\overline{X} -a \cdot \frac{\sigma}{\sqrt{n}} > \mu   > \overline{X} -b \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha\\
+    P\left(\overline{X} - z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} > \mu   > \overline{X} - z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha\\
+    P\left(\overline{X} + z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} > \mu   > \overline{X} - z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha\\
+    P\left(\overline{X} - z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} < \mu   < \overline{X} + z_{1-\alpha/2} \cdot \frac{\sigma}{\sqrt{n}} \right) &= 1-\alpha
+\end{aligned}$$
+
+Often a $1-\alpha$ confidence for $\mu$ is written $$\begin{aligned}
+    \overline{X} \pm z_{1-\alpha/2} \frac{\sigma}{\sqrt{n}}
+\end{aligned}$$
+
+Suppose $(Y_{1},Y_{2},\cdots,Y_{n})$ and $Y_{i} \sim Pois(\lambda)$. The variance for $Y_{i}$, $\sigma^{2} = V(Y)$ is $\lambda$. Then a $1-\alpha$ confidence interval for $\lambda$ is $\overline{Y} \pm z_{1-\alpha/2} \sqrt{ \frac{\lambda}{n} }$. Given a dataset $\mathcal{D} = (2,5,3,8,10)$ we can estimate $\hat{\lambda} = \overline{y}$ and so a sample confidence interval is $\overline{y} \pm z_{1-\alpha/2} \sqrt{ \frac{\overline{y}}{n} } = 5.6 \pm z_{1-\alpha/2} \sqrt{ \frac{5.6}{5} }$
+
+Below is a table of common $z$ values
+
+            z\_
+  ------- -------
+   0.025   -1.96
+   0.050   -1.64
+   0.100   -1.28
+   0.500     0
+   0.900   1.28
+   0.950   1.64
+   0.975   1.96
+
+A 95% confidence interval will use the $z$ values -1.96 and 1.96, a 90% confidence interval will use the $z$ values -1.64 and 1.64, and a 80% confidence interval will use the values -1.28 and 1.28.
+
+### Hypothesis Testing
+The goal of statistical hypothesis testing is to support or deny a claim about a parameter. We first generate a set of statements about a parameter---called a **hypotheses**---that can we test. Second, we collect data that will help us make a decision about whether one statement or the other is true. Third, we decide which statement can be refuted.
+
+A **hypothesis** is typically a pair of statements about a parameter. The **null hypothesis ($H_{0}$)** is a statement about a parameter value that allows us to characterize data generated by that parameter.
+
+Suppose the following random sample $(X_{1},X_{2},\cdots,X_{n})$ $X_{i}~Bern(\theta)$. Then a null hypothesis might be $\theta = 0.50$. This statement about a parameter would allow us to characterize samples of data $(x_{1},x_{2},\cdots,x_{n})$ we may see from our random sample $(X_{1},X_{2},\cdots,X_{n})$.
+
+The **alternative hypothesis ($H_{1}$)** is a statement about ta parameter value that is contrary to the null hypothesis.
+
+Suppose the sample sample and distribution as in the above example. Then an alternative hypothesis may be $\theta > 0.50$. This statement about a parameter would also allow us to characterize samples of data $(x_{1},x_{2},\cdots,x_{n})$ we may see from our random sample $(X_{1},X_{2},\cdots,X_{n})$.
+
+We will say that a **hypothesis** must contain a null and alternative statement.
+
+A hypothesis may be $H_{0}: \theta = 0.50$ vs $H_{1}: \theta > 0.50$
+
+Though we plan to collect data and create a test that will support or deny the above hypothesis, we may make a mistake. We will never know the true parameter value from any finite given random sample and so our test will be imperfect. Mistakes in hypothesis testing are categorized into two types: types I and II. A **type I error** (informally called a false positive) is when we decide to accept the alternative hypothesis $(H_{1})$ however the null hypothesis is the truth. A **type II error** (informally called a false negative) is when we decide to accept the null hypothesis however the alternative hypothesis is true. Related to type I and II errors is the **power** of a hypothesis. The **power** of a hypothesis test is the probability that we decide on the alternative hypothesis given that the alternative hypothesis is true.
+
+Define a random sample $(X_{1},X_{2},X_{3},\cdots,X_{n})$ and $X_{i}~f$. We define the **space**, $\mathcal{S}$, of our random sample as $supp(X_{1}) \times supp(X_{2}) \times \cdots \times supp(X_{n})$. The space of a random sample is the set of all possible tuples that our random sample could generate, or all possible data sets.
+
+A **hypothesis test** is a decision criteria such that we reject the null hypothesis if a realization $(x_{1},x_{2},\cdots,x_{n})$ from our random sample $(X_{1},X_{2},\cdots,X_{n})$ satisfies some criteria. The set $C$ of all possible realizations that lead us to reject the null hypothesis is called the **critical region**.
+
+Suppose $(X_{1},X_{2},\cdots,X_{n})$ and $X_{i} \sim \mathcal{N}(\mu,1)$. We can form the hypothesis $H_{0}: \mu=0$ vs $H_{1}: \mu > 0$. Intuitively we may decide to collect realizations $\mathcal{D} = (x_{1},x_{2},\cdots,x_{n})$, compute $\overline{x} = \sum_{i=1}^{n} x_{i} / n$, and decide to reject the null hypothesis if $\overline{x} > c$. The set of all samples $(x_{1},x_{2},\cdots,x_{n})$ where $\overline{x}>c$ would be our **critical region**.
+
+#### Z-test for Normally distributed data
+A two-sided one-sample $Z$ test supposes that given a random samples $(X_{1},X_{2},X_{3},\cdots,X_{n})$ the following null and alternative hypotheses
+
+$$\begin{aligned}
+    H_{0}: \mu  = \mu_{0} \\ 
+    H_{1}: \mu \neq \mu_{0}
+\end{aligned}$$ where $\mu_{0}$ is a constant, we can form the following statistic---called a test statistic
+
+$$\begin{aligned}
+    Z = \frac{\overline{X} - \mu_{0}}{ \sigma / \sqrt{n} }
+\end{aligned}$$ A **test statistic** is a statistic that is used to help determine whether a sample is or is not in a pre-specified critical region.
+
+If the $H_{0}$ was true, we would expect $\overline{X}$ to be close to the value $\mu_{0}$, then our test statistic $Z$ should be close to the value zero. When $Z$ is far from zero then we would reject $H_{0}$ and suspect that $H_{1}$ is the more plausible conclusion.
+
+Then we can define a critical region ($C$) as $$C = \left \{ (x_{1},x_{2},\cdots,x_{n}) |\; |Z| > c \right\}$$
+
+The value $c$ can be chosen by limiting our potential type I error, the error that we accept $H_{1}$ given that $H_{0}$ is true. If $H_{0}$ is true then the probability that we accept $H_{1}$ is all the possible samples such that
+
+$$\begin{aligned}
+      P( |Z| &> c) \\
+      P(-c > Z &> c) 
+\end{aligned}$$ or samples where $Z$ is smaller than negative $c$ and larger than positive $c$.
+
+Lets limit our type I error to $\alpha$ so that we need to find a value $c$ such that $$\begin{aligned}
+      P(-c > Z &> c) \leq \alpha 
+\end{aligned}$$ We will split the probability $\alpha$ in half so that $$\begin{aligned}
+      P( Z > c)  &\leq \frac{\alpha}{2}\\
+      P( Z < -c) &\leq \frac{\alpha}{2}
+\end{aligned}$$
+
+We know from the CLT that the random variable $Z$ has a standard normal distribution if $\mathbb{E}(X) = \mu_{0}$, in other words, if $H_{0}$ is true. This means that we can compute the probability that $$\begin{aligned}
+      P( Z > c)  &= \frac{\alpha}{2}.
+\end{aligned}$$ This is by definition the value $z_{1-\alpha/2}$.
+
+Suppose we collect a dataset $\mathcal{D} = ( -0.43,  1.58, -2.37, -0.11, -0.15,  2.23, -0.87, -1.24,  1.55,  0.38)$. We assume that the data was generated from a random sample $(G_{1},G_{2},\cdots,G_{10})$ where $G_{i} \sim \mathcal{N}(\mu,\sigma^{2})$. We wish to test the following hypotheses: $$\begin{aligned}
+    H_{0}&: \mu  = 0 \\ 
+    H_{1}&: \mu  > 0 
+\end{aligned}$$ with the critical region $C = \{ (g_{1}, g_{2}, \cdots, g_{10}) \, | Z > 2 \,  \}$
+
+We first compute our Z sample statistic $Z = \frac{\overline{x} - \mu_{0}}{\overline{\sigma^{2}} / \sqrt{n}} =  \frac{0.057 - 0}{ 0.18 / \sqrt{10} } = 1.01$. We used the MoM estimate for $\sigma^{2}$. Because our sample Z statistic is $1.01 < 2$ we cannot reject the null hypothesis.
+
+#### Z-test for a Bernoulli sample
+The Z-test can be applied to any random sample. For example, suppose we take a random sample $(Y_{1}, Y_{2}, \cdots, Y_{n})$ where $Y_{i} \sim Bern(\theta)$.
+
+We can build a Z test statistic for hypotheses of the form $$\begin{aligned}
+    H_{0}&: \theta  = \theta_{0} \\ 
+    H_{1}&: \theta  \neq \theta_{0}
+\end{aligned}$$ as $$\begin{aligned}
+    Z &= \frac{\overline{X} - \theta_{0}}{ \sigma / \sqrt{n} } \\ 
+      &= \frac{\overline{X} - \theta_{0}}{ \sqrt{\hat{\theta}(1-\hat{\theta}) / n} } \\ 
+\end{aligned}$$ where $\hat{\theta}$ is the MoM estimator for $\theta$.
+
+#### The p-value
+## Exercises
+1.  Suppose we collect the following dataset $D = (10,2,6,7,17,3,1,1,6,5,4,1)$ and further we assume that each data point $d_{i}$ was generated by sampling from a sequence of i.i.d random variables $d_{1} \sim X_{1}, d_{2} \sim X_{2}, \cdots, d_{12} \sim X_{12}$ where $X_{i} \sim Geom(p)$.
+
+    1.  State the LLN for the above problem
+
+    2.  Compute the sample mean of $D$
+
+    3.  What can we say about the sample mean, using the LLN, if we collect 13,14,$\cdots$ data points?
+
+2.  Suppose we collect the following sample $\mathcal{D} = (10,2,6,7,17,3,1,1,6,5,4,1)$ and further we assume that each data point $d_{i}$ was generated by sampling from a sequence of i.i.d random variables $d_{1} \sim X_{1}, d_{2} \sim X_{2}, \cdots, d_{12} \sim X_{12}$ where $X_{i} \sim Pois(\lambda)$.
+
+    1.  State the LLN for the above problem
+
+    2.  Compute the sample variance
+
+    3.  What can we say about the sample variance, using the LLN, if we collect 13,14,$\cdots$ data points?
+
+3.  Define independent and identically distributed random variables $B_{1},B_{2},B_{3},B_{4},B_{5} \sim Geom(p)$. Suppose we sample these rvs and collect $d = (12,9,1,5,3)$.
+
+    1.  Use the method of moments to develop an estimator for $p$.
+
+    2.  Estimate $p$ from the above sample $\mathcal{D}$.
+
+    3.  What is the estimated expected value?
+
+    4.  What is the estimated variance?
+
+    5.  What is the estimated $P(B_{1} = 1)$
+
+4.  Assume $(Y_{1}, Y_{2},Y_{3}, \cdots, Y_{n})$ are a random sample where $Y_{i} \sim \mathcal{N}(\mu,\sigma^{2})$. Further assume we collected the data set $\mathcal{D} = (1.30, -2.11, 1.44, 0.35, -0.40, 0.61,-1.06, -0.86, -0.60, 0.19)$.
+
+    1.  Use the method of moments to develop an estimator for $\mu$ and for $\sigma^{2}$.
+
+    2.  Estimate $\mu$ and $\sigma^{2}$ from the above sample $\mathcal{D}$.
+
+    3.  What is the estimated expected value?
+
+    4.  What is the estimated variance?
+
+    5.  What is the estimated $P(Y_{1} = 2)$
+
+5.  Lets assume we decide to study the incubation period for the influenza virus. The incubation period is defined as the number of days between when the virus infects a host and when that host becomes symptomatic. We collect from 5 individuals the date they came in contact with someone who was infected with influenza and the date they themselves were symptomatic.
+
+    $$\begin{aligned}
+            \mathcal{D} 
+            = \begin{bmatrix}
+                Date of contact & Date of Symptoms\\
+                02/20  & 02/21\\
+                04/12  & 04/17\\
+                03/22  & 03/25\\
+                10/24  & 10/26\\
+                07/15  & 07/18\\
+              \end{bmatrix}
+        
+    \end{aligned}$$
+
+    1.  Provide a statistical setup for this data. Define a sample, assumptions about the sample, and a distribution for each random variable that is a part of the sample
+
+    2.  Estimate the parameters in your statistical setup using the Method of Moments
+
+    3.  Describe your results
+
+6.  Suppose $(Y_{1},Y_{2},\cdots,Y_{n})$ is a random sample where $Y_{i} \sim Pois(\lambda)$.
+
+    1.  Define an estimator for $\lambda$ using the MoM
+
+    2.  Characterize the distribution of $\hat{\lambda}$ using the CLT.
+
+7.  The Aedes mosquito is a vector for yellow and dengue fever, the Zika virus, and Chikungunya. Tracking the daily incidence of Aedes mosquitoes in a given location is one signal associated with the incidence of these four diseases. Mosquitoes are routinely captured and counted and the daily frequency of mosquitoes is reported to departments of public health.
+
+    Suppose we capture and count the number of mosquitoes in a specific county for two weeks, and compile this data in the following dataset $\mathcal{D} = (124,98,188,212,100,34,90,99,46,176,67,94,344,67)$ where one data point represents the number of mosquitoes collected in one day.
+
+    1.  Define a set of random variables that we will use to model the daily frequency of mosquitoes. Include notation for the random sample and define a common Poisson distribution for all random variables.
+
+    2.  Use the method of moments to estimate parameter value $(\lambda)$ from the given dataset $\mathcal{D}$
+
+    3.  Estimate the probability that we observe 124 mosquitoes
+
+    4.  Estimate the probability that we observe 120 to 125 mosquitoes
+
+    5.  Estimate the expected value and the variance
+
+    6.  Let's rework the above model and assume that each random variable follows a Normal distribution. Use the method of moments to estimate parameters value $(\mu, \sigma^{2})$ from the given dataset $\mathcal{D}$.
+
+    7.  Estimate the expected value and the variance for the Normal model
+
+8.  A Randomized Control trial (RCT) is a common study design to compare the efficacy and safety of a novel device. Suppose the sponsor for a new cardiovascular device wishes to compare the safety of their device, which they define as the percent of patients who survive 7 days after the procedure, and the efficacy, which they define as the percent of patients who survive at one year after the procedure.\
+    The trial enrolls 50 patients to receive the device (the device group) and 50 patients who receive optimal medical therapy (the control group). The trial enrolls these 100 patients over the course of two years. At year 3 all 100 patients have been contacted at one year after their procedure (called a patient's one year followup).\
+    We find that in the device group 8 patients did not survive at or after 7 days from the date of their procedure and 18 patients did not survive one year after the date of their procedure. In the control group 9 patients did not survive at or after 7 days and 33 patients did not survive one year after the procedure.
+
+    1.  Define a set of random variables that we will use to model the number of patients in the device group who survive 7 days after the procedure out of a total of 50 patients and a second set of random variables to model the number of patients in the control group who survive 7 days after the procedure out of a total of 50 patients. Include mathematical notation for the random sample and a common distribution for both sets of random variables.
+
+    2.  Use the Method of Moments to estimate the parameters for the distribution you chose for survival at or after 7 day for patients in the device group. Report the parameter estimate.
+
+    3.  Use the Method of Moments to estimate the parameters for the distribution you chose for survival at or after 7 days for patients in the control group. Report the parameter estimate.
+
+    4.  What can you conclude about the safety of the novel device compared to the safety of optimal medical therapy?
+
+    5.  Use the Method of Moments to estimate the parameters for the distribution you chose for survival at one year for patients in the device group. Report the parameter estimate.
+
+    6.  Use the Method of Moments to estimate the parameters for the distribution you chose for survival at one year for patients in the control group. Report the parameter estimate.
+
+    7.  What can you conclude about the efficacy of the novel device compared to the efficacy of optimal medical therapy?
+
+9.  Suppose a random sample $(Y_{1},Y_{2},\cdots,Y_{10})$ generates the following dataset $\mathcal{D} = ( 0,-2.3,0.4,9.2,10,-9.8,3,3,3,0)$. Assume that $X_{i} \sim \mathcal{N}(\mu,\sigma^{2})$ and compute the corresponding ten z-scores.
+
+10. Suppose we collect the following dataset $\mathcal{D} = ( 6.51, -1.11,  7.29,  0.23,  3.45,  0.85, -0.42,  5.66,  0.04, -1.31 )$. Further, lets assume $X_{i} \sim \mathcal{N}(\mu,\sigma^{2})$.
+
+    1.  Please compute a $1-\alpha$ confidence interval for $\mu$. The symbol $z_{1-\alpha/2}$ should appear in this interval.
+
+    2.  Please compute a 95% confidence interval for $\mu$.
+
+    3.  Please compute a 80% confidence interval for $\mu$.
+
+    4.  Why is your 95% confidence interval larger than your 80% confidence interval?
+
+11. Suppose we collect the following dataset $\mathcal{D} = (4, 0,  1, 2, 8, 13, 0, 1, 0, 3)$. Further, lets assume $X_{i} \sim Geom(p)$.
+
+    1.  Please compute a $1-\alpha$ confidence interval for $\frac{1}{p}$. The symbol $z_{1-\alpha/2}$ should appear in this interval.
+
+    2.  Please compute a 95% confidence interval for $\frac{1}{p}$.
+
+    3.  Please compute a 80% confidence interval for $\frac{1}{p}$.
+
+12. Suppose we collect the following dataset $\mathcal{D} = (0, 1, 1, 1, 1, 1, 1, 0, 1, 1)$. Further, lets assume $X_{i} \sim Bernoulli(\theta)$.
+
+    1.  Please compute a $1-\alpha$ confidence interval for $\theta$. The symbol $z_{1-\alpha/2}$ should appear in this interval.
+
+    2.  Please compute a 95% confidence interval for $\theta$.
+
+    3.  Please compute a 80% confidence interval for $\theta$.
+
+13. Suppose we collect the following dataset $\mathcal{D} = (6, 6, 2, 7, 3, 3, 5, 5, 7, 5)$. Further, lets assume $X_{i} \sim Binomial(50,\theta)$.
+
+    1.  Please compute a $1-\alpha$ confidence interval for $\theta$. The symbol $z_{1-\alpha/2}$ should appear in this interval.
+
+    2.  Please compute a 95% confidence interval for $\theta$.
+
+    3.  Please compute a 80% confidence interval for $\theta$.
+
+14. Suppose we collect the following dataset $\mathcal{D} = (1, 4, 2, 1, 1, 4, 3, 2, 3, 0)$. Further, lets assume $X_{i} \sim Poisson(\lambda)$.
+
+    1.  Please compute a $1-\alpha$ confidence interval for $\lambda$. The symbol $z_{1-\alpha/2}$ should appear in this interval.
+
+    2.  Please compute a 95% confidence interval for $\lambda$.
+
+    3.  Please compute a 80% confidence interval for $\lambda$.
+
+15. Consider two random samples $(Y_{1},Y_{2},\cdots,Y_{n_{1}})$ and $(X_{1},X_{2},\cdots,X_{n_{2}})$ where $Y_{i} \sim Bern(\theta_{y})$ and $X_{i} \sim Bern(\theta_{x})$. Please compute a $1-\alpha$ confidence interval for $\overline{Y} - \overline{X}$.
+
+16. Suppose we collect the following dataset $\mathcal{D}_{y} = (0,1,1,0,1,0,1,1,1 )$ corresponding to a random sample $(Y_{1},Y_{2},\cdots,Y_{9})$ where $Y_{i} \sim Bern(\theta_{y})$ and a dataset $\mathcal{D}_{x} = (0,1,0,0,0,0)$ corresponding to a random sample $(X_{1},X_{2},\cdots,X_{6})$ where $X_{i} \sim Bern(\theta_{x})$.
+
+    1.  Please compute a 95% confidence interval for $\theta_{y} - \theta_{x}$.
+
+    2.  Please compute a 95% confidence interval for $\theta_{x} - \theta_{y}$.
+
+    3.  Please compute a 80% confidence interval for $\theta_{y} - \theta_{x}$.
+
+17. Suppose we collect the following dataset $\mathcal{D}_{y} = (3,3,2,1,3,2,1,4,0,3)$ corresponding to a random sample $(Y_{1},Y_{2},\cdots,Y_{10})$ where $Y_{i} \sim Pois(\lambda_{y})$ and a dataset $\mathcal{D}_{x} = (1, 0, 3, 0, 1, 2, 3, 1)$ corresponding to a random sample $(X_{1},X_{2},\cdots,X_{8})$ where $X_{i} \sim Pois(\lambda_{x})$.
+
+    1.  Please compute a 95% confidence interval for $\lambda_{y} - \lambda_{x}$.
+
+    2.  Please compute a 80% confidence interval for $\lambda_{y} - \lambda_{x}$.
+
+18. Suppose we collect the following dataset $\mathcal{D}_{y} = (-2.02,  0.78, -0.20, -0.47,  0.11, -2.57,  1.27,  3.17, 0.60)$ corresponding to a random sample $(Y_{1},Y_{2},\cdots,Y_{9})$ where $Y_{i} \sim \mathcal{N}(\mu_{y},2)$ and a dataset $\mathcal{D}_{x} = (2.46, -6.00, -3.67, -1.48, -3.60,  1.72, -1.28, -2.93, -1.70)$ corresponding to a random sample $(X_{1},X_{2},\cdots,X_{9})$ where $X_{i} \sim \mathcal{N}(\mu_{x},2)$.
+
+    1.  Please compute a 95% confidence interval for $\mu{y} - \mu_{x}$.
+
+    2.  Please compute a 80% confidence interval for $\mu_{y} - \mu_{x}$.
+
+19. Suppose we collect a dataset $\mathcal{D} = \left(2,5,1,10,5,8,3 \right)$. Assume that this data was generated from a random sample $(Y_{1},Y_{2},Y_{3},Y_{4},Y_{5},Y_{6},Y_{7})$ where $Y_{i} \sim Pois(\lambda)$.
+
+    Our null and alternative hypotheses for the parameter $\lambda$ are $$\begin{aligned}
+            H_{0} : \lambda = 4 \\ 
+            H_{1} : \lambda > 4
+        
+    \end{aligned}$$
+
+20. Suppose we are asked to analyze the primary safety endpoint for a clinical trial at a point when half of the patients were enrolled and followed for one year. The trial plans to enroll a total of 70 patients. At one year we find that $12\%$ of patient experienced the safety endpoint, defined as a combination of all cause mortality, myocardial infarction, or stroke. The trial is assumed safe if the true proportion of events is smaller than 10%.
+
+    1.  Please develop a statistical setup for the above dataset. Include a sequence of random variables and define a common distribution for this sample.
+
+    2.  Derive a method of moments [estimator]{.underline} for the above parameter(s) of your common distribution.
+
+    3.  Compute an estimate of your parameters using your MoM estimator.
+
+    4.  Compute a 95% confidence interval for your parameter(s).
+
+    5.  State a reasonable null and alternative hypothesis to test if your parameter is below 0.10.
+
+    6.  Please compute a $Z$ test statistic for the above sample and your hypotheses.
+
+    7.  Given a critical region $C = \{ (y_{1},y_{2}, \cdots ) \, | \, Z < -1.96 \}$, would we reject the null hypothesis?
+
+    8.  Would the pvalue that corresponds to this test statistic be greater than or smaller than 0.05? Why?

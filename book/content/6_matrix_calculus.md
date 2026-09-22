@@ -1,0 +1,455 @@
+---
+title: Matrix calculus
+---
+
+# Matrix calculus
+
+## Introduction
+Statistics is meant to impart structure to observations in nature and many times the observations that we. are interested in contain many different pieces of information. For example, when studying the relationship between patients randomized in a clinical trial we may be interested in, for each patient, their age, sex, race, body mass index, and whether or not they attain the outcome of interest. Then every observation (a patient) contains five pieces of information. We can think of this observation as living in a single, 5-dimensional space.
+
+Mathematical objects that keep track of values in 1, 2, 3, and higher dimensional spaces are called vectors, and linear maps that take as input one vector and produce a second vector are called matrices. The rules for operating with vectors and matrices is called **matrix calculus**.
+
+Because we wish to structure observations with many pieces of information it is natural that statistics rely on matrix calculus.
+
+## Vectors
+### Definition
+Define the set of all real numbers (positive, negative, and decimal numbers) with the symbol $\mathbb{R}$, and further define the Cartesian product of the set of real numbers with itself as $\mathbb{R}^{2} = \mathbb{R} \times \mathbb{R}$. In general the Cartesian produce of $\mathbb{R}$ with itself $N$ times can be denoted as $\mathbb{R}^{N}$.
+
+We will informally define a vector of length $N$ as a point in the space $\mathbb{R}^{N}$. A vector is typically represented as a lowercase letter and the values of the vector are enclosed in square brackets.
+
+For the space $\mathbb{R}^{2}$ we can define the vector $$a = \begin{bmatrix}
+        3\\
+        2
+    \end{bmatrix}$$ or the vector $$c = \begin{bmatrix}
+        0.1\\
+        -23.01
+    \end{bmatrix}$$ For a space $\mathbb{R}^{6}$ we could define a vector $$v = \begin{bmatrix}
+        0\\
+        1\\
+        -8\\
+        3.2\\
+        -0.7\\
+        1
+    \end{bmatrix}$$
+
+Vectors can be characterized by their **length**. The **length** of a vector is the number of values that are needed to define it. The vector $a$ and $c$ have a length of 2 and the vector $v$ has a length of 6.
+
+Though it is possible to discuss vectors of length one, more often we give these objects their own name and special properties. A vector of length one is called a **scalar**. Scalars do not need to be enclosed by square brackets.
+
+In any of the spaces $R^{N}$ for $N>1$ examples of scalars are 6, -0.4, 0,1, 22, etc.
+
+### Addition and subtraction
+There are specific rules for how two vectors can interact with one another. You can add and subtract vectors, and you can multiply vectors by a scalar. Addition, subtraction; multiplication and division by a scalar all have a geometric interpretation.
+
+To add two vectors you add the corresponding values in the first, second, third and so on position. You cannot add vectors of different lengths.
+
+Let $$\begin{aligned}
+    x = \begin{bmatrix}
+        1\\
+        0\\
+        -2
+    \end{bmatrix}
+\end{aligned}$$ and $$\begin{aligned}
+    y = \begin{bmatrix}
+        0.5\\
+        2.0\\
+        -2.0
+    \end{bmatrix}
+\end{aligned}$$ Then $$\begin{aligned}
+    x + y = \begin{bmatrix}
+        1 + 0.5\\
+        0 + 2.0\\
+        -2 + (-2.0)
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        1.5\\
+        2.0\\
+       -4.0
+    \end{bmatrix}
+\end{aligned}$$
+
+To subtract two vectors you subtract the corresponding values in the first, second, third and so on position. You cannot subtract vectors of different lengths. $$\begin{aligned}
+    x - y = \begin{bmatrix}
+        1 - 0.5\\
+        0 - 2.0\\
+        -2 - (-2.0)
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        0.5\\
+        -2.0\\
+        0.0
+    \end{bmatrix}
+\end{aligned}$$
+
+Consider $\mathbb{R}^{2}$, the vector $v =  \begin{bmatrix} x \\ y \end{bmatrix}$ can be drawn on the Cartesian coordinate plane by starting at the origin $(0,0)$ and then drawing a straight line from the origin to the point $(x,y)$.
+
+You can draw the addition of two vectors with a method nicknamed the \"tip to tail\" draw. Consider two vector labeled $x$ and $y$. Draw the first vector $x$ starting at the origin. Draw the second vector starting, not at the origin, but at the tip of the first vector. The vector $x+y$ is the vector starting at the origin and ending at the tip of the second vector.
+
+### Multiplication and division by a scalar
+A new vector $v$ can be built by multiplying or dividing a vector $x$ by a scalar $\alpha$, $v = \alpha x$. The vector $v$ is built by multiplying each entry in $x$ by $\alpha$. $$\begin{aligned}
+    v &= \alpha \cdot x\\
+      &= \alpha \begin{bmatrix}
+                  x_{1}\\
+                  x_{2}\\
+                  \vdots\\
+                  x_{n}
+      \end{bmatrix}\\
+      &= \begin{bmatrix}
+                  \alpha \cdot x_{1}\\
+                  \alpha \cdot x_{2}\\
+                  \vdots\\
+                  \alpha \cdot x_{n}
+      \end{bmatrix}
+\end{aligned}$$
+
+Geometrically, when you multiply a vector by a scalar that is greater than one the vector is stretched. When diving by that scalar (or multiplying by a scalar between 0 and one) then the vector is compressed. When you multiply a vector by negative one that vector is rotated by 180 degrees. To multiply a vector by a scalar smaller than negative one first rotate the vector 180 degrees and then stretch the vector. A vector multiplied by a scalar between negative one and zero is rotated and then compressed.
+
+## Matrices
+### Definition
+A matrix is a list of vectors and can be thought of as a function that transforms one vector to another. A matrix is often denoted as a capital letter and the values of a matrix are enclosed in square brackets.
+
+We can build a matrix $$\begin{aligned}
+    A = \begin{bmatrix}
+        2 & -1 & 0 \\
+        0.5 & 0.1 & 10 \\
+    \end{bmatrix}
+\end{aligned}$$ Entries in a matrix $A$ can be referred to by row number and column number. For example the $(2,1)$ entry in the matrix $A$ is value 0.5. We can also refer to the (2,1) entry in the matrix $A$ as $A_{(2,1)}$
+
+The **shape** of a matrix is a tuple that describes the number of rows of the matrix and the number of columns. The shape of the matrix $A$ above is $(2,3)$.
+
+An important operation---called the **transpose**---interchanges rows and columns of a matrix. Define a matrix $$\begin{aligned}
+    B = \begin{bmatrix}
+           1 & 2 \\
+           2 & 3 \\
+           4 & 5 \\
+           5 & 1 \\
+        \end{bmatrix}
+\end{aligned}$$ with shape $(4,2)$. Then the transpose of $B$, labeled $B'$ or sometimes $B^{t}$, is the matrix with shape $(2,4)$ and where the first row of $B$ is the first column of $B'$, the second row of $B$ is the second column of $B'$, and so on. $$\begin{aligned}
+    B' = \begin{bmatrix}
+           1 & 2 & 4 & 5\\
+           2 & 3 & 5 & 1
+    \end{bmatrix}
+\end{aligned}$$ If the matrix $B$ has shape $(2,4)$ then the matrix $B'$ has shape $(4,2)$.
+
+We can think of vectors as matrix where the number of rows equals the length of the vector and the number of columns equals one. This allows us to consider both a vector $$\begin{aligned}
+    r = \begin{bmatrix}
+        3\\
+        2\\
+        1\\
+        0
+    \end{bmatrix}
+\end{aligned}$$ and a vector transpose $r = [3, 2, 1, 0]'$. A vector with several rows and one column is often called a **column vector** and a vector with several columns and one row is often called a **row vector**. The vector $r$ is an example of a column vector.
+
+Like vectors, matrices can interact with other matrices and with vectors.
+
+### Matrix times vector
+If the number of columns of a matrix $M$ is equal to the length of a vector $v$ then $M$ and $v$ can be multiplied together to produce another vector. $$\begin{aligned}
+    M \cdot v=q
+\end{aligned}$$ If the shape of the matrix $M$ is $(n,p)$ and the vector $v$ is of length $p$ then the new vector $q$ will be of length $n$.
+
+The values of each entry in $q$ are combinations of individual rows in the matrix $M$ and the vector $v$.
+
+Let $$\begin{aligned}
+    M = \begin{bmatrix}
+         1 & 2 & 3 \\
+         4 & 5 & 6 \\
+        \end{bmatrix}
+\end{aligned}$$ and $$\begin{aligned}
+    v = \begin{bmatrix}
+           0\\
+           -3\\
+           -2
+        \end{bmatrix}
+\end{aligned}$$
+
+To compute the first entry in $q$ we work with the first row of $M$ and the vector $v$. $$\begin{aligned}
+    q_{1} &= M_{1,1} \cdot v_{1} + M_{1,2} \cdot v_{2} + M_{1,3} \cdot v_{3} \\  
+          &= 1 \cdot 0 + 2 \cdot (-3) + 3 \cdot (-2)\\
+          &= 0 -6 -6 = -12
+\end{aligned}$$ where $q_{1}$ denotes the first entry in $q$, $v_{i}$ denotes the $i^{th}$ entry in $v$ and $M_{i,j}$ denotes the $(i,j)$ entry in the matrix $M$.
+
+To compute the second entry in $q$ we work with the second row of $M$ and the vector $v$, and so on. $$\begin{aligned}
+    q_{2} &= M_{2,1} \cdot v_{1} + M_{2,2} \cdot v_{2} + M_{2,3} \cdot v_{3} \\  
+          &= 4 \cdot 0 + 5 \cdot (-3) + 6 \cdot (-2)\\
+          &= 0 -13 -12 = -25
+\end{aligned}$$ The new vector $q$ generated by multiplying $M$ and $v$ is the vector $$\begin{aligned}
+    q = \begin{bmatrix}
+        -12\\
+        -25
+    \end{bmatrix}
+\end{aligned}$$ We could rewrite, if desired, the above vector $q$ as a scalar times a vector $$\begin{aligned}
+    q = -1\begin{bmatrix}
+        12\\
+        25
+    \end{bmatrix}
+\end{aligned}$$
+
+In general, given a matrix $A$ with shape $(N,P)$ and a vector $b$ with length $P$, multiplying $A b$ produces a new vector $c$ where $$\begin{aligned}
+    c_{i} = \sum_{k} A_{i,k}\; b_{k} 
+\end{aligned}$$
+
+Because a matrix times a vector produces a new vector we can think of a matrix as a function. The input to our function is a vector (such as the vector $v$) and the output is another vector (such as the vector $q$ above)
+
+Matrices and vectors have special properties when interacting. A matrix can be \"distributed\" across two vectors Given a matrix $M$ and the vectors $q$ and $r$, the matrix product $$\begin{aligned}
+    M (q + r)  = M q + M r
+\end{aligned}$$ Scalars can be \"factored\" out of a matrix, vector multiplications. Let $\alpha$ be a scalar, then $$\begin{aligned}
+    M (\alpha q ) = \alpha \left(M q\right) 
+\end{aligned}$$
+
+### Matrix-matrix operations
+#### Addition and subtraction
+Matrices of the same shape can be added and subtracted by adding (subtracting) corresponding entries.
+
+Given the matrix $$\begin{aligned}
+    A = \begin{bmatrix}
+        -1 & 2 & -3 \\ 
+         0 & -1 & 2 \\ 
+    \end{bmatrix}
+\end{aligned}$$ and the matrix $$\begin{aligned}
+    B = \begin{bmatrix}
+        9 & 8 & 7 \\ 
+         10 & 2 & 0.5 \\ 
+    \end{bmatrix}
+\end{aligned}$$ then the $(i,j)$ entry of a new matrix $C = A + B$ is the sum of the $(i,j)$ entry in $A$ and $(i,j)$ entry in $B$ or $$C_{ij} = A_{ij} + B_{ij}$$ The $(i,j)$ entry of a matrix $D = A - B$ is the difference of the $(i,j)$ entry in $A$ and $(i,j)$ entry in $B$ or $$D_{ij} = A_{ij} - B_{ij}$$
+
+#### Multiplication
+A matrix $A$ can be multiplied by a matrix $B$ to produce a new matrix $C$ with the following formula $$\begin{aligned}
+    C_{ij} = \sum_{k} A_{i,k} B_{k,j}
+\end{aligned}$$
+
+Given a matrix $$\begin{aligned}
+    A = \begin{bmatrix}
+           0 & 1 \\ 
+           -1 & 2 \\ 
+        \end{bmatrix}
+\end{aligned}$$ and a matrix $$\begin{aligned}
+    B = \begin{bmatrix}
+           1 & 4 \\ 
+           3 & 2 \\ 
+        \end{bmatrix}
+\end{aligned}$$ The entry in the new matrix $C$, in the (1,1) position is $$\begin{aligned}
+    C_{1,1} &= A_{1,1} B_{1,1} + A_{1,2} B_{2,1}\\
+            &= 0 (1) + 1 (3) = 3
+\end{aligned}$$ $$\begin{aligned}
+    C_{1,2} &= A_{1,1} B_{1,2} + A_{1,2} B_{2,2}\\
+            &= 0 (4) + 1 (2) = 2
+\end{aligned}$$ $$\begin{aligned}
+    C_{2,1} &= A_{2,1} B_{1,1} + A_{2,2} B_{2,1}\\
+            &= -1 (1) + 2 (3) = 5
+\end{aligned}$$ $$\begin{aligned}
+    C_{2,2} &= A_{2,1} B_{1,2} + A_{2,2} B_{2,2}\\
+            &= -1 (4) + 2 (2) = 0
+\end{aligned}$$ $$\begin{aligned}
+    C = \begin{bmatrix}
+        3 & 2 \\ 
+        5 & 0
+        \end{bmatrix}
+\end{aligned}$$
+
+The above operation for computing an entry in $C$ occurs frequently in matrix calculus. This operation is called an **inner product**. The inner product of the vector $v$ of length $n$ and the vector $q$ of length $n$ is equal to $$\begin{aligned}
+    v'q = \sum_{k=1}^{n} v_{k}q_{k}
+\end{aligned}$$
+
+We can think of the matrix $A$ as consisting of $2$ row vectors, the vectors $A_{1,:} = [0,1]$ and $A_{2,:} = [-1, 2]$, and the matrix $B$ as consisting of two column vectors $$\begin{aligned}
+    B_{:,1} = \begin{bmatrix}
+          1 \\
+          3
+    \end{bmatrix}
+\end{aligned}$$ and $$\begin{aligned}
+    B_{:,2} = \begin{bmatrix}
+          4 \\
+          2
+    \end{bmatrix}
+\end{aligned}$$
+
+Then the matrix $C_{i,j} = A_{i,:} B_{:,j}$ or $$\begin{aligned}
+    C = \begin{bmatrix}
+           A_{1,:}' B_{:,1} & A_{1,:}' B_{:,2} \\ 
+           A_{2,:}' B_{:,1} & A_{2,:}' B_{:,2} \\ 
+        \end{bmatrix}
+\end{aligned}$$
+
+**Important:** The matrix product $AB$ is not necessarily equal to the matrix product $BA$. For matrix multiplication, the order of multiplication matters.
+
+### The matrix inverse
+There exists a special matrix called **identity matrix**. The identity matrix $I$ of size $n$ is a matrix with $n$ rows and $n$ columns with ones along the diagonal entries (the entries $I_{k,k}$ for $k$ from 1 to $n$) and then zeroes for all other entries. $$\begin{aligned}
+    I_{2} = \begin{bmatrix}
+        1 & 0 \\ 
+        0 & 1 
+    \end{bmatrix}\\
+    I_{3} = \begin{bmatrix}
+        1 & 0 & 0 \\ 
+        0 & 1 & 0 \\ 
+        0 & 0 & 1  
+    \end{bmatrix}
+\end{aligned}$$
+
+A matrix $A$ has an inverse $B$ if (i) $A$ has the same number of rows as columns and (ii) $$\begin{aligned}
+    AB = I \\ 
+    BA = I
+\end{aligned}$$ A matrix $B$ that satisfies the above properties is called the inverse of $A$ and is denoted $A^{-1}$.
+
+A matrix inverse is similar to an inverse in one dimensional algebra. In 1d algebra an inverse $b$ for the variable $a$ satisfies $$\begin{aligned}
+    ab = 1 \\ 
+    ba = 1 
+\end{aligned}$$ and the variable $b$ is denotes $a^{-1}$ or $\frac{1}{a}$. Matrix with a different number of rows and columns will never have an inverse.
+
+## Multivariate Linear regression
+Multivariate regression models are ubiquitous in science because of their ability to relate two or more measurable quantities to a target variable.
+
+Multivariate linear regression supposes that many different covariates $(x_{1}, x_{2}, \cdots, x_{p})$ may be able to describe the distribution of a random variable $Y$.
+
+Multivariate linear regression extends single covariate regression, and we will see below that adding more covariates makes estimating, as well as communicating, parameters more difficult.
+
+### Data and model setup
+Multivariate linear regression supposes that an experiment generates a single data point that contains one measurement of our target of interest and two or more measurements of covariates $(x_{1}, x_{2}, \cdots)$ that may help explain our target.
+
+A single observation takes the form $$\begin{aligned}
+    d = \left( y_{1}, x_{1}, x_{2}, x_{3}, \cdots, x_{p}  \right) 
+\end{aligned}$$ where $y_{1}$ is our target and $x_{1}, x_{2}, \cdots, x_{p}$ are $p$ covariates that are measured at the same time as our target.
+
+A dataset containing $n$ observation then can be written as $$\begin{aligned}
+    &\mathcal{D} = \left( (y_{1}, x_{1,1}, x_{1,2}, x_{1,3}, \cdots, x_{1,p}), \\
+    &(y_{2}, x_{2,1}, x_{2,2}, x_{2,3}, \cdots, x_{2,p}), \cdots, (y_{n}, x_{n,1}, x_{n,2}, x_{n,3}, \cdots, x_{n,p})  \right)     
+\end{aligned}$$
+
+The model for multivariate linear regression assumes $$\begin{aligned}
+    Y_{i} | x_{i,1:p} \sim \mathcal{N}\left( \beta_{0} + \beta_{1}x_{i,1} + \beta_{2}x_{i,2} + \cdots, \beta_{p}x_{i,p}, \sigma^{2} \right)
+\end{aligned}$$ where we assume that the observation $y_{i}$ was generated from a corresponding random variable $Y_{i}$ with the above Normal distribution conditioned on all $x$ covariate values.
+
+The above model can also be expressed as $$\begin{aligned}
+    Y_{i} | x_{i,1:p} &=  \beta_{0} + \beta_{1}x_{i,1} + \beta_{2}x_{i,2} + \cdots, \beta_{p}x_{i,p} + \epsilon_{i} \\ 
+    \epsilon_{i} &\sim \mathcal{N}(0,\sigma^{2})
+\end{aligned}$$ Compared to single covariate linear regression, multivariate linear regression begins with $\beta_{0} + \beta_{1}x_{i,1}$ as in single covariate linear regression and then further adjusts the mean by multiplying each additional covariate $x_{i,k}$ with a corresponding $\beta_{k}$ and summing all of these quantities $\beta_{k}x_{i,k}$.
+
+### A single categorical variable
+A natural experiment where one will need to use multivariate regression is when associating a continuous target variable $y$ to a categorical explanatory variable $x$ that can take one of $C$ possible categories.
+
+Suppose that we wish to relate $y$, a continuous variable, to x, a variable that can take one of the three values 'A', 'B', 'C' then linear regression does not---at first---make much sense.
+
+Given the dataset $$\begin{aligned}
+\mathcal{D} = \begin{bmatrix}
+        y & x \\
+        0.2  & "A"\\
+        0.4  & "A"\\
+        -0.5 & "B"\\
+        0.6  & "C"\\
+        -0.5 & "B"
+              \end{bmatrix}
+\end{aligned}$$
+
+The naive model would assume that $$\begin{aligned}
+    Y_{i} &= \beta_{0} + \beta_{1} x_{i} + \epsilon_{i} \\
+    \epsilon_{i} &\sim \mathcal{N}(0,\sigma^{2})     
+\end{aligned}$$ However, we cannot multiply the value $\beta_{1}$ by the letters A, B, C.
+
+One solution is to convert this single categorical variable into many numerical variables. We will need to (i) choose a **reference** value for $x$ that we will compare all other y values corresponding to other categories to and (ii) create two additional columns---one per category excluding the reference---that contain the value one when that category value is present in $x$ and the value zero otherwise.
+
+For example, suppose for the above dataset we choose a reference of \"B\". Then we will create one column that identifies values of \"A\" and a second column that identifies values of \"C\".
+
+Our new dataset will look like $$\begin{aligned}
+\mathcal{D} = \begin{bmatrix}
+        y & x & x_{A} & x_{c}\\
+        0.2  & "A" & 1 & 0\\
+        0.4  & "A" & 1 & 0\\
+        -0.5 & "B" & 0 & 0\\
+        0.6  & "C" & 0 & 1\\
+        -0.5 & "B" & 0 & 0\\
+              \end{bmatrix}
+\end{aligned}$$
+
+We can update our naive single covariate linear regression with the following multivariate linear regression. $$\begin{aligned}
+    Y_{i} &= \beta_{0} + \beta_{1}x_{i,A} + \beta_{2}x_{i,C} + \epsilon_{i}\\
+    \epsilon_{i} & \sim \mathcal{N}(0,\sigma^{2}) 
+\end{aligned}$$
+
+To interpret the above model, lets compute the expected value of $Y$ when we observe a \"A\", \"B\", and a \"C\".
+
+When we observe an \"A\" then the covariate $x_{A}$ is the value one and the covariate $x_{c}$ is the value zero. So then $$\begin{aligned}
+    \mathbb{E}(Y |x=A) &= \beta_{0} + \beta_{1} (1) + \beta_{2} (0)\\
+                       &= \beta_{0} + \beta_{1}
+\end{aligned}$$
+
+When we observe a \"B\" then the covariate $x_{A}$ is the value zero and the covariate $x_{c}$ is the value zero. So then $$\begin{aligned}
+    \mathbb{E}(Y |x=B) &= \beta_{0} + \beta_{1} (0) + \beta_{2} (0)\\
+                       &= \beta_{0}
+\end{aligned}$$
+
+When we observe a \"C\" then the covariate $x_{A}$ is the value zero and the covariate $x_{c}$ is the value one. So then $$\begin{aligned}
+    \mathbb{E}(Y |x=C) &= \beta_{0} + \beta_{1} (0) + \beta_{2} (1)\\
+                       &= \beta_{0} + \beta_{2}
+\end{aligned}$$
+
+The intercept term $(\beta_{0})$ is the expected value of $Y$ when we observe a $x$ value that is equal to the reference. All other categories include this reference $\beta_{0}$. The parameter $\beta_{1}$ is the change in the expected value of $Y$ when an observation includes $x=A$ **compared to the expected value when x=B**. The parameter $\beta_{2}$ is the change in the expected value of $Y$ when an observation includes $x=C$ **compared to the expected value when x=B**.
+
+### Two or more continuous covariates and adjustment for confounding
+We can include several continuous valued $x$ covariates without the need to first transform them as we must do when we include a $x$ covariate that is categorical. For example, suppose that we wish to associate the annual cost of household health insurance to annual family income, number of dependents that are claimed on previous taxes by the individual who pays the insurance, and age of the oldest resident of the household.
+
+Then we can generate a model $$\begin{aligned}
+    Y_{i} &= \beta_{0} + \beta_{1} x_{i,1} + \beta_{2}x_{i,2} + \beta_{3} x_{i,3} + \epsilon_{i}\\
+    \epsilon_{i} &\sim \mathcal{N}(0,\sigma^{2})    
+\end{aligned}$$ and estimate the parameters $\theta = (\beta_{0}, \beta_{1}, \beta_{2}, \beta_{3}, \sigma^{2})$. Standard software can produce point estimates, confidence intervals, and hypothesis tests at a desired false positive rate, but software can not interpret the hypothesized impact of these parameters on $Y$.
+
+One method to understand whether a covariate $x$ is associated with $Y$ while adjusting for all other covariates that are considered is to build an **added variable plot** between $Y$ and $x$.
+
+Suppose our experiment generates three covariates $(x_{1}, x_{2}, x_{3})$ and a target $y$. An added variable plot for the covariate $x_{3}$ follows these steps:
+
+- Fit a linear regression to $Y    = \beta_{0} + \beta_{1}x_{1}+ \beta_{2}x_{1} + \epsilon_{Y|x3}$
+
+- Fit a linear regression to $X_{3} = \beta^{*}_{0} + \beta^{*}_{1}x_{1}+ \beta^{*}_{2}x_{1} + \epsilon_{X_{3}}$
+
+- Plot the pairs ( $\epsilon_{Y|x3}$, $\epsilon_{X_{3}}$ )
+
+- Fit the regression $\epsilon_{Y|x3} = \beta_{3} \epsilon_{X_{3}}$ and plot the expected value.
+
+The residuals $\epsilon_{Y|x3}$ include any relationships that are not captured by associating $Y, x_{1}$, and $x_{2}$ linearly. The residuals $\epsilon_{X_{3}}$ are values that linearly relating $x_{1}$ and $x_{2}$ could not capture, and so when we relate $\epsilon_{Y|x3}$ to $\epsilon_{X_{3}}$ we are asking about the association between patterns in $Y$ that could not be captured by $x_{1}$ and $x_{2}$, and patterns in $x_{3}$ that could not be explained by $x_{1}$ and $x_{2}$.
+
+### Estimating $\beta$ and $\sigma$
+## Homework
+Let $$\begin{aligned}
+        A = \begin{bmatrix}
+                1/2 & -2 & 0 \\
+                -10 & -5 & -1 
+            \end{bmatrix} \; 
+        B = \begin{bmatrix}
+             1 & 0  \\ 
+             0 & -1 \\ 
+             1 & 1
+            \end{bmatrix} \; 
+        x = \begin{bmatrix}
+                -2 \\ 
+                1 \\
+                0
+            \end{bmatrix}
+    
+\end{aligned}$$ If possible, please compute the below. If it is not possible to compute one of the below quantities then please write \"Cannot compute\" and explain why.
+
+1.  $AB$
+
+2.  $BA$
+
+3.  $Ax$
+
+4.  $Bx$
+
+5.  $BAx$
+
+Suppose that we collect data on the total number of confirmed influenza hospitalizations over the 2022/2023 influenza season and hypothesize that the total number of cases may be related to population density of the state and the percent of the state population that is vaccinated before October 1, 2022.
+
+Please describe a multivariate linear regression that may be used to model this data. Please include: (i) the model, a description of each variable in the dataset, a summary of what the vector $y$ and matrix $X$ might look like.
+
+Let $\beta' x$, where $$\begin{aligned}
+        \beta = \begin{bmatrix}
+                    \beta_{0}\\
+                    \beta_{1}\\
+                    \beta_{2}\\
+                    \beta_{3}\\
+                 \end{bmatrix}\; ; 
+                 x   = \begin{bmatrix}
+                    x_{3}\\
+                    x_{2}\\
+                    x_{1}\\
+                    x_{0}\\
+                 \end{bmatrix}
+    
+\end{aligned}$$ Please expand $\beta'x$ as a series of sums and products.

@@ -1,0 +1,8 @@
+jupyter-book==2.1.6
+matplotlib
+numpy
+scipy
+pandas
+scikit-learn
+seaborn
+ipywidgets
