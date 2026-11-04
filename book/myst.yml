@@ -33,6 +33,7 @@ project:
         - file: content/LAB05.md
     - title: Multivariate methods
       children:
+	- file: MVN.ipynb
         - file: PCA.ipynb
 site:
   template: book-theme
